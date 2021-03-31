@@ -131,6 +131,7 @@ class App extends Component {
       fetch(element)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         this.setState(prevState => ({
           charactersOwnedByAddress : [...prevState.charactersOwnedByAddress, data]
         }))
