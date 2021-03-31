@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
 
+// React Router
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+// Web3
 import Web3 from 'web3'
 
+// Contract Info
 import {CONTRACT_ABI, CONTRACT_ADDRESS} from './contractConfig.js';
+
+// React components
+import Home from './Home';
+import CreateNFT from './CreateNFT';
+import MyNFTs from './MyNFTs'
 
 class App extends Component {
 
   state = {
     address : "",
-    loggedIn : false
+    loggedIn : false,
+    charactersOwnedByAddress : []
   }
 
 
+  // Function called when clicked on "Connect". 
   signInWithWallet = () => {
     const web3 = new Web3(window.ethereum); 
 
@@ -27,6 +43,7 @@ class App extends Component {
     })
   }
 
+  // Once a Web3 wallet is detected in the browser, getAcc
   getAccountInfo = (web3) => {
 
     let account;
@@ -57,10 +74,11 @@ class App extends Component {
     const tokenContract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 
     const tokenCount = await tokenContract.methods.balanceOf(account).call();
-    const characters = await tokenContract.methods.characters("0").call();
+
+    // const characters = await tokenContract.methods.characters("0").call();
 
 
-    console.log(characters);
+    // console.log(characters);
 
     this.setState({
       tokenContract,
@@ -84,41 +102,76 @@ class App extends Component {
     this.create(this.state.web3, this.state.address, this.state.tokenContract);
   }
 
-  setTokenURI = async (event) => {
+  setTokenURI = async (event, tokenURI) => {
     event.preventDefault();
 
     let tokenContract = this.state.tokenContract;
 
-    const setTokenURI = await tokenContract.methods.setTokenURI("0", this.tokenURI.value).send({ from: this.state.address, to:CONTRACT_ADDRESS })
-    .once('receipt', (receipt) => {
-      console.log(receipt);
-    })
+    console.log(tokenURI);
 
-    
+    // const setTokenURI = await tokenContract.methods.setTokenURI("0", this.tokenURI.value).send({ from: this.state.address, to:CONTRACT_ADDRESS })
+    // .once('receipt', (receipt) => {
+    //   console.log(receipt);
+    // })
   }
+
+  getMyNFTs = async () => {
+
+    let tokenContract = this.state.tokenContract;
+    let account = this.state.address;
+
+    const retrieveTokens = await tokenContract.methods.retrieveTokens(account).call();
+
+    // console.log(retrieveTokens);
+
+    retrieveTokens.forEach(element => this.getThem(element));
+    }
+
+    getThem = (element) => {
+      fetch(element)
+      .then(response => response.json())
+      .then(data => {
+        this.setState(prevState => ({
+          charactersOwnedByAddress : [...prevState.charactersOwnedByAddress, data]
+        }))
+      });
+      }
 
 
   render() {
     return (
+      <Router> 
       <div className="App">
-        <nav> 
-          <div> Address : {this.state.address } </div>
-          <div> Connected status : {this.state.loggedIn ? "Connected" : "Not Connected"} </div>
-          <div> Characters owned by you : {this.state.tokenCount} </div>
-
+        
+        <nav className="navbar"> 
+          <Link to="/">Home</Link>
+          {this.state.loggedIn ? 
+          <div> 
+          <Link to="/createNFT">Create NFT</Link> 
+          <Link to="/myNFTs">My NFTs</Link> 
+          </div>
+          : ""}
+          
+          <div>  {this.state.address } </div>
+          <div> {this.state.loggedIn ? "Connected" : "Not Connected"} </div>
+          <div> Character count : {this.state.tokenCount} </div>
         </nav>
-        <button onClick={this.signInWithWallet}> Connect </button> 
-        <button onClick={this.mintNFT}> Mint NFT</button> 
 
-        <form onSubmit={(event) => this.setTokenURI(event)}> 
-        <input type="input" ref={(input) => this.tokenURI = input}/> 
-        <button type="submit"> Set TokenURI </button> 
-        </form>
+        <Switch> 
+          <Route path="/" exact>
+            <Home signInWithWallet={this.signInWithWallet}/>
+          </Route>
 
+          <Route path="/createnft">
+            <CreateNFT mintNFT={this.mintNFT} setTokenURI={this.setTokenURI}/>
+          </Route>
   
-  
-        <div></div>
+          <Route path="/mynfts"> 
+              <MyNFTs getMyNFTs={this.getMyNFTs} characters={this.state.charactersOwnedByAddress}/>
+          </Route>
+        </Switch>
       </div>
+      </Router>
     );
 
   }
