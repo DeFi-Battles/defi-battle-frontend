@@ -19,7 +19,9 @@ import {CONTRACT_ABI, CONTRACT_ADDRESS} from './contractConfig.js';
 // React components
 import Home from './Home';
 import CreateNFT from './CreateNFT';
-import MyNFTs from './MyNFTs'
+import MyNFTs from './MyNFTs';
+import Page from "./Page";
+
 
 class App extends Component {
 
@@ -102,17 +104,17 @@ class App extends Component {
     this.create(this.state.web3, this.state.address, this.state.tokenContract);
   }
 
-  setTokenURI = async (event, tokenURI) => {
+  setTokenURI = async (event, tokenID, tokenURI) => {
     event.preventDefault();
 
     let tokenContract = this.state.tokenContract;
 
-    console.log(tokenURI);
+    // console.log(tokenContract);
 
-    // const setTokenURI = await tokenContract.methods.setTokenURI("0", this.tokenURI.value).send({ from: this.state.address, to:CONTRACT_ADDRESS })
-    // .once('receipt', (receipt) => {
-    //   console.log(receipt);
-    // })
+    const setTokenURI = await tokenContract.methods.setTokenURI(tokenID, tokenURI).send({ from: this.state.address, to:CONTRACT_ADDRESS })
+    .once('receipt', (receipt) => {
+      console.log(receipt);
+    })
   }
 
   getMyNFTs = async () => {
@@ -122,7 +124,7 @@ class App extends Component {
 
     const retrieveTokens = await tokenContract.methods.retrieveTokens(account).call();
 
-    // console.log(retrieveTokens);
+    console.log(retrieveTokens);
 
     retrieveTokens.forEach(element => this.getThem(element));
     }
@@ -144,23 +146,22 @@ class App extends Component {
       <Router> 
       <div className="App">
         
-        <nav className="navbar"> 
-          <Link to="/">Home</Link>
+        <nav className="navbar nes-container"> 
+          <Link to="/"> <span className="nes-text is-primary">DeFi Battles</span></Link>
           {this.state.loggedIn ? 
-          <div> 
+          <React.Fragment> 
           <Link to="/createNFT">Create NFT</Link> 
           <Link to="/myNFTs">My NFTs</Link> 
-          </div>
+          </ React.Fragment>
           : ""}
           
-          <div>  {this.state.address } </div>
-          <div> {this.state.loggedIn ? "Connected" : "Not Connected"} </div>
-          <div> Character count : {this.state.tokenCount} </div>
+          <div> {this.state.loggedIn ? <div style={{color : "green", display:"flex"}}> <div style={{textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", width: "100px"}}> {this.state.address } </div> Connected </div> : <div style={{color : "red"}}> Not Connected </div>} </div>
+          {/* <div> Character count : {this.state.tokenCount} </div> */}
         </nav>
 
         <Switch> 
           <Route path="/" exact>
-            <Home signInWithWallet={this.signInWithWallet}/>
+            <Home signInWithWallet={this.signInWithWallet} loggedIn={this.state.loggedIn}/>
           </Route>
 
           <Route path="/createnft">
@@ -168,7 +169,11 @@ class App extends Component {
           </Route>
   
           <Route path="/mynfts"> 
-              <MyNFTs getMyNFTs={this.getMyNFTs} characters={this.state.charactersOwnedByAddress}/>
+              <MyNFTs getMyNFTs={this.getMyNFTs} characters={this.state.charactersOwnedByAddress} tokenCount={this.state.tokenCount}/>
+          </Route>
+
+          <Route path="/page"> 
+            <Page characters={this.state.charactersOwnedByAddress}/>
           </Route>
         </Switch>
       </div>

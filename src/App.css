@@ -1,7 +1,57 @@
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+
 .navbar {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   border: 1px solid black;
   padding: 20px;
+}
+
+/* HOME */
+
+.home-container {
+  margin: 10px;
+}
+
+/* Create NFT */
+
+.create-nft-container {
+  margin: 10px;
+}
+
+.create-nft-box {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-nft-image {
+}
+
+.my-nft-container-left {
+  display: grid;
+  grid-template-columns: auto;
+  grid-gap: 20px;
+  text-align: start;
+  margin: 10%;
+}
+
+.create-nft-attributes {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* My NFTs */
+
+.my-nfts-container {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-nfts-list {
+  /* padding: 10px; */
 }

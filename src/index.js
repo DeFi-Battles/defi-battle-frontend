@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import "nes.css/css/nes.min.css";
+
 import Web3 from 'web3'
 
 ReactDOM.render(
