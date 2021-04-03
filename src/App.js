@@ -39,6 +39,7 @@ class App extends Component {
     window.ethereum.enable().then(() => {
       this.setState({loggedIn : true, web3})
       this.getAccountInfo(web3);
+      console.log(CONTRACT_ADDRESS);
     })
     .catch(error => {
       console.log(error)
