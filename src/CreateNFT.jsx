@@ -35,11 +35,13 @@ function CreateNFT(props) {
             <button className="nes-btn is-success" onClick={props.mintNFT}> Buy </button> 
 
             <div>
-            <form onSubmit={(event) => props.setTokenURI(event, tokenID, tokenURI)}> 
+            {/* <form onSubmit={(event) => props.setTokenURI(event, tokenID, tokenURI)}> 
               <input type="input" onChange={(data) => changeID(data.target.value)}/> 
               <input type="input" onChange={(data) => changeURI(data.target.value)}/> 
               <button type="submit"> Set TokenURI </button> 
-            </form>
+            </form> */}
+
+           
             </div>
 
           </div>

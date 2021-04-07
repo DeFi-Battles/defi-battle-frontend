@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import axios from 'axios';
+
 import './App.css'
 
 // React Router
@@ -14,7 +16,7 @@ import {
 import Web3 from 'web3'
 
 // Contract Info
-import {CONTRACT_ABI, CONTRACT_ADDRESS} from './contractConfig.js';
+import {CONTRACT_ABI, CONTRACT_ADDRESS, AM} from './contractConfig.js';
 
 // React components
 import Home from './Home';
@@ -24,6 +26,7 @@ import Page from "./Page";
 
 
 class App extends Component {
+
 
   state = {
     address : "",
@@ -92,21 +95,77 @@ class App extends Component {
   async create(web3, account, tokenContract) {
 
     const mintNFT = await tokenContract.methods.requestRandomCharacter("123", "Shrey").send({ from: account, to:CONTRACT_ADDRESS })
-    .once('receipt', (receipt) => {
+    .once('receipt', async (receipt) => {
+
       console.log(receipt);
+
+      this.setState({
+        requestId : receipt.events.RequestId.returnValues.requestId
+      })
+
+      this.findEvent(tokenContract);
+
     })
+  }
+
+  async findEvent (tokenContract) {
+
+
+  const logs = await tokenContract.events.CharacterEvent({
+    filter: {requestId : this.state.requestId}, // Using an array means OR: e.g. 20 or 23
+    // fromBlock: 0
+}, function(error, event){ 
+  console.log(event);
+
+  this.setState({
+    characterEvent : event
+  })
+
+  this.callAPI(event.returnValues.dna, event.returnValues.requestId, event.returnValues.tokenId);
+
+ }.bind(this))
+
+  // setTimeout(() => {
+  //   console.log(logs);
+
+  // }, 10000)
 
   }
 
-  // Contract address
-  // 0x0017cb3Da249AA3e4284D1981b029cF73d9eA56C
+  callAPI = async (dna, requestId, tokenId) => {
+    console.log(this.state.requestId);
+    console.log(dna, requestId, tokenId);
+
+
+    const resp = await axios.get(
+      `https://defi-nft.eastus.cloudapp.azure.com/?dna=${dna}`
+    )
+    .then(
+      data =>  {
+        console.log(data.data.cid)
+        this.setTokenURI(tokenId, data.data.cid);
+      }
+    )
+    // console.log(resp.data);
+
+
+
+  }
+
+  // 36792816897365431580298662583798433218903088783883418869473290157741044165020 0x92afc8f86ecb23faf0ba075b0d51779f68fb17666e4534a95a47e72f29c5e286 62
+
+  // 96991146342228008315758434462710337638045716942171628452365869320145371664596
+
+  // 235677180112682612922228753751472530619048654078310860587450472893954680635717
+
+  // 96991146342228008315758434462710337638045716942171628452365869320145371664596 0x50f9cd8b1e3d88032b092046e7c5ccca8238f244df3f3e51f0d616b61cd0acb2 60
 
   mintNFT = () => {
     this.create(this.state.web3, this.state.address, this.state.tokenContract);
   }
 
-  setTokenURI = async (event, tokenID, tokenURI) => {
-    event.preventDefault();
+  setTokenURI = async (tokenID, tokenURI) => {
+    // event.preventDefault();
 
     let tokenContract = this.state.tokenContract;
 
@@ -159,8 +218,13 @@ class App extends Component {
           <div> {this.state.loggedIn ? <div style={{color : "green", display:"flex"}}> <div style={{textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", width: "100px"}}> {this.state.address } </div> Connected </div> : <div style={{color : "red"}}> Not Connected </div>} </div>
           {/* <div> Character count : {this.state.tokenCount} </div> */}
         </nav>
+        {/* <button onClick={() => this.findEvent(this.state.tokenContract)}> Find </button>
+        <button onClick={() => this.callAPI("fsfs", "fs", "d")}> Call </button> */}
+
+
 
         <Switch> 
+        
           <Route path="/" exact>
             <Home signInWithWallet={this.signInWithWallet} loggedIn={this.state.loggedIn}/>
           </Route>

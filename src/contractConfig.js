@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = '0xB56Be242bc57748e984bd97aa9E0B996Dcf8879F';
+export const CONTRACT_ADDRESS = '0x757eA8EfE5a947DeDf3000640D60DD9598a9F9db';
 
 export const CONTRACT_ABI = [
   {
@@ -54,6 +54,44 @@ export const CONTRACT_ABI = [
       }
     ],
     "name": "ApprovalForAll",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dna",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "CharacterEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RequestId",
     "type": "event"
   },
   {
