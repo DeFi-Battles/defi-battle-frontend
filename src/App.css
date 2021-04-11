@@ -1,11 +1,8 @@
 /* @import url(https://fonts.googleapis.com/css?family=Press+Start+2P); */
 
-/* .App {
-  background: url("https://png.pngtree.com/thumb_back/fw800/background/20190223/ourmid/pngtree-beautiful-blue-sky-ocean-pixelated-background-design-backgroundpixelated-designadvertising-backgroundbackground-image_66463.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  image-rendering: pixelated;
-} */
+.App {
+font-family: 'Press Start 2P', cursive;
+}
 
 .navbar {
   display: flex;
