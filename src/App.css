@@ -1,4 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+/* @import url(https://fonts.googleapis.com/css?family=Press+Start+2P); */
+
+/* .App {
+  background: url("https://png.pngtree.com/thumb_back/fw800/background/20190223/ourmid/pngtree-beautiful-blue-sky-ocean-pixelated-background-design-backgroundpixelated-designadvertising-backgroundbackground-image_66463.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+} */
 
 .navbar {
   display: flex;
@@ -39,9 +46,20 @@
 }
 
 .create-nft-attributes {
-  display: flex;
-  justify-content: space-between;
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+grid-gap : 1em;
 }
+
+.create-nft-attributes-traits {
+  text-decoration: underline wavy blue;
+}
+
+.create-nft-attributes-value {
+  color: rgb(236, 76, 98);
+}
+
+
 
 /* My NFTs */
 

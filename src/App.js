@@ -23,6 +23,8 @@ import Home from './Home';
 import CreateNFT from './CreateNFT';
 import MyNFTs from './MyNFTs';
 import Page from "./Page";
+import Battle from "./battlePage";
+
 
 
 class App extends Component {
@@ -31,7 +33,8 @@ class App extends Component {
   state = {
     address : "",
     loggedIn : false,
-    charactersOwnedByAddress : []
+    charactersOwnedByAddress : [],
+    creatingNFT : false
   }
 
 
@@ -71,7 +74,7 @@ class App extends Component {
 
 
 
-   
+
     // console.log(CONTRACT_ADDRESS)
 
   }
@@ -90,9 +93,18 @@ class App extends Component {
       tokenContract,
       tokenCount
     })
+
+    this.getMyNFTs();
   }
 
   async create(web3, account, tokenContract) {
+
+    setTimeout(() => {
+      this.setState({
+        creatingNFT : true
+      });
+    }, 7000)
+
 
     const mintNFT = await tokenContract.methods.requestRandomCharacter("123", "Shrey").send({ from: account, to:CONTRACT_ADDRESS })
     .once('receipt', async (receipt) => {
@@ -125,11 +137,6 @@ class App extends Component {
 
  }.bind(this))
 
-  // setTimeout(() => {
-  //   console.log(logs);
-
-  // }, 10000)
-
   }
 
   callAPI = async (dna, requestId, tokenId) => {
@@ -152,14 +159,6 @@ class App extends Component {
 
   }
 
-  // 36792816897365431580298662583798433218903088783883418869473290157741044165020 0x92afc8f86ecb23faf0ba075b0d51779f68fb17666e4534a95a47e72f29c5e286 62
-
-  // 96991146342228008315758434462710337638045716942171628452365869320145371664596
-
-  // 235677180112682612922228753751472530619048654078310860587450472893954680635717
-
-  // 96991146342228008315758434462710337638045716942171628452365869320145371664596 0x50f9cd8b1e3d88032b092046e7c5ccca8238f244df3f3e51f0d616b61cd0acb2 60
-
   mintNFT = () => {
     this.create(this.state.web3, this.state.address, this.state.tokenContract);
   }
@@ -174,6 +173,9 @@ class App extends Component {
     const setTokenURI = await tokenContract.methods.setTokenURI(tokenID, tokenURI).send({ from: this.state.address, to:CONTRACT_ADDRESS })
     .once('receipt', (receipt) => {
       console.log(receipt);
+      this.setState({
+        creatingNFT : false
+      })
     })
   }
 
@@ -205,12 +207,12 @@ class App extends Component {
     return (
       <Router> 
       <div className="App">
-        
+
         <nav className="navbar nes-container"> 
           <Link to="/"> <span className="nes-text is-primary">DeFi Battles</span></Link>
           {this.state.loggedIn ? 
           <React.Fragment> 
-          <Link to="/createNFT">Create NFT</Link> 
+          <Link to="/createNFT" >Create NFT</Link> 
           <Link to="/myNFTs">My NFTs</Link> 
           </ React.Fragment>
           : ""}
@@ -230,15 +232,21 @@ class App extends Component {
           </Route>
 
           <Route path="/createnft">
-            <CreateNFT mintNFT={this.mintNFT} setTokenURI={this.setTokenURI}/>
+            <CreateNFT mintNFT={this.mintNFT} setTokenURI={this.setTokenURI} state={this.state}/>
           </Route>
   
           <Route path="/mynfts"> 
               <MyNFTs getMyNFTs={this.getMyNFTs} characters={this.state.charactersOwnedByAddress} tokenCount={this.state.tokenCount}/>
           </Route>
 
-          <Route path="/page"> 
-            <Page characters={this.state.charactersOwnedByAddress}/>
+          <Route path="/page/:id"  render={(props) => (
+            <Page {...props} characters={this.state.charactersOwnedByAddress}/>
+          )}> 
+            
+          </Route>
+
+          <Route path="/battle"> 
+              <Battle/>
           </Route>
         </Switch>
       </div>

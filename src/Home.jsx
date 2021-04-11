@@ -8,7 +8,7 @@ function Home(props) {
       <div class="nes-container is-centered home-container">
         <p> Mint Unique NFT’s , upgrade them, battle and earn rewards. </p>
         <p> Connect your wallet to get started! </p>
-        {props.loggedIn ? <Link to="/mynfts"> My NFTs </Link> :  <button class="nes-btn is-error" onClick={props.signInWithWallet}> Connect </button>}
+        {props.loggedIn ? <Link to="/mynfts"> My NFTs </Link> :  <button type="button" class="nes-btn is-error" onClick={props.signInWithWallet}> Connect </button>}
         
       </div>
 
