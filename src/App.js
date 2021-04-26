@@ -45,7 +45,7 @@ class App extends Component {
     window.ethereum.enable().then(() => {
       this.setState({loggedIn : true, web3})
       this.getAccountInfo(web3);
-      console.log(CONTRACT_ADDRESS);
+      // console.log(CONTRACT_ADDRESS);
     })
     .catch(error => {
       console.log(error)
@@ -186,7 +186,7 @@ class App extends Component {
 
     const retrieveTokens = await tokenContract.methods.retrieveTokens(account).call();
 
-    console.log(retrieveTokens);
+    // console.log(retrieveTokens);
 
     retrieveTokens.forEach(element => this.getThem(element));
     }
@@ -195,12 +195,14 @@ class App extends Component {
       fetch(element)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState(prevState => ({
           charactersOwnedByAddress : [...prevState.charactersOwnedByAddress, data]
         }))
       });
       }
+
+    
 
 
   render() {
@@ -246,7 +248,7 @@ class App extends Component {
           </Route>
 
           <Route path="/battle"> 
-              <Battle/>
+              <Battle state={this.state} signIn={this.signInWithWallet}/>
           </Route>
         </Switch>
       </div>

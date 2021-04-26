@@ -1,28 +1,49 @@
 import React, {useState, useEffect} from 'react';
-import { io } from "socket.io-client";
 
-function App() {
+// import contractData from './battleContract.json';
 
-    const socket = io("http://localhost:3000/");
+function App(props) {
+
+    const [r, setR] = useState();
+    const [socket, setSocket] = useState();
+
+// useEffect(async () => {
+
+// const kaboom = await axios.get("https://kaboomjs.com/lib/0.2.0/kaboom.js");
+
+// console.log(kaboom.data);
+
+//     // const socket = io("http://localhost:9018/");
+
+//     // setSocket(socket);
+
+//     // socket.on('chat', function(code) {
+//     //     console.log(code);
+//     //   });
+
+//     scene("main", () => {
+
+//         // add a text at position (100, 100)
+//         add([
+//             text("ohhimark", 32),
+//             pos(100, 100),
+//         ]);
+    
+//     });
+ 
+// }, []);
 
     let data = () => {
-
         // console.log(socket);
-
-        socket.emit('chat', "Fuck you");
+        // socket.emit('chat', r);
+        // console.log(kaboom.global());
     }
 
-
-    let receive = () => {
-        socket.on('chat', function(code) {
-            console.log(code);
-          });
-    }
 
     return(
         <div> 
-            <button onClick={data}>fsfs </button>
-            <button onClick={receive}> Receive </button>
+            {/* <form> <input type="text" id="tex" onChange={(i) => setR(i.target.value)}/> </form>
+            <button onClick={data}>fsfs </button> */}
 
         </div>
     )
