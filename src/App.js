@@ -247,8 +247,10 @@ class App extends Component {
             
           </Route>
 
-          <Route path="/battle"> 
-              <Battle state={this.state} signIn={this.signInWithWallet}/>
+          <Route path="/battle" render={(props) => (
+            <Battle {...props} state={this.state} signIn={this.signInWithWallet}/>
+          )}> 
+
           </Route>
         </Switch>
       </div>

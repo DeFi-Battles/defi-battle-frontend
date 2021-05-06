@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function Page (props) { 
 
     console.log(props.match.params.id);
 
     const id = props.match.params.id;
+
+    console.log(props.characters[id]);
 
     return(
         <div> 
@@ -27,7 +34,8 @@ function Page (props) {
 
             <div> Price : 0.1 ETH </div>
 
-            <button className="nes-btn is-success"> Battle </button> 
+            {/* <button > Battle </button>  */}
+            <Link className="nes-btn is-success" to={{pathname: `/battle`, query : props.characters[id]}} > Battle </Link>
 
           </div>
 
