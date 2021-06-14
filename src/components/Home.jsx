@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import sampleMonsters from "./samlpleMonsters";
+import sampleMonsters from "./sampleMonsters";
 
 function Home(props) {
   console.log(props.loggedIn);

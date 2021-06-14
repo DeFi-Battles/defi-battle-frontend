@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-import './App.css';
+import '../styles/App.css';
 
 // React Router
 import {
@@ -16,7 +16,7 @@ import {
 import Web3 from 'web3'
 
 // Contract Info
-import {CONTRACT_ABI, CONTRACT_ADDRESS, AM} from './contractConfig.js';
+import {CONTRACT_ABI, CONTRACT_ADDRESS, AM} from '../smart-contract-config/contractConfig.js';
 
 // React components
 import Home from './Home';

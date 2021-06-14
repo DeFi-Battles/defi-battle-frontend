@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import questionMark from "./question_mark.png";
+import questionMark from "../assets/question_mark.png";
 
 function CreateNFT(props) {
 

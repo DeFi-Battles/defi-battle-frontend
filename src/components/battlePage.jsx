@@ -6,16 +6,16 @@ import Web3 from 'web3'
 
 
 
-import potionP from './potion.png'
-import bowP from './bow.png'
-import chestC from './chest_closed.png'
-import chestO from './chest_open.png'
-import swordP from './sword.png';
-import unknown from './question_mark.png'
-import fire from './fire.png'
+import potionP from '../assets/potion.png'
+import bowP from '../assets/bow.png'
+import chestC from '../assets/chest_closed.png'
+import chestO from '../assets/chest_open.png'
+import swordP from '../assets/sword.png';
+import unknown from '../assets/question_mark.png'
+import fire from '../assets/fire.png'
 
 
-import {CONTRACT_ADDRESS, CONTRACT_ABI} from "./battleContract.js"
+import {CONTRACT_ADDRESS, CONTRACT_ABI} from "../smart-contract-config/battleContract.js"
 
 
 class Canvas extends Component {
